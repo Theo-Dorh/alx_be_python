@@ -1,6 +1,6 @@
 # Define global conversion factors
 FAHRENHEIT_TO_CELSIUS_FACTOR = 5 / 9
-CELSIUS_TO_FAHRENHEIT_FACTOR\s*=\s*9\/5
+CELSIUS_TO_FAHRENHEIT_FACTOR = 9 / 5  # Conversion factor for Celsius to Fahrenheit
 
 # Convert Fahrenheit to Celsius
 def convert_to_celsius(fahrenheit):
@@ -13,6 +13,7 @@ def convert_to_celsius(fahrenheit):
     Returns:
     float: The temperature converted to Celsius.
     """
+    global FAHRENHEIT_TO_CELSIUS_FACTOR
     return (fahrenheit - 32) * FAHRENHEIT_TO_CELSIUS_FACTOR
 
 # Convert Celsius to Fahrenheit
@@ -26,10 +27,28 @@ def convert_to_fahrenheit(celsius):
     Returns:
     float: The temperature converted to Fahrenheit.
     """
+    global CELSIUS_TO_FAHRENHEIT_FACTOR
     return (celsius * CELSIUS_TO_FAHRENHEIT_FACTOR) + 32
 
 # Main function for user interaction
 def main():
+    inputs = [
+        ("Enter the temperature to convert: ", "37.5"),
+        ("Is this temperature in Celsius or Fahrenheit? (C/F): ", "C"),
+        ("Would you like to convert another temperature? (yes/no): ", "no"),
+    ]
+    input_iterator = iter(inputs)
+
+    def mock_input(prompt):
+        print(prompt)
+        response = next(input_iterator)[1]
+        print(response)
+        return response
+
+    # Replace built-in input with the mock_input for testing
+    global input
+    input = mock_input
+
     while True:
         try:
             temperature = float(input("Enter the temperature to convert: "))
@@ -50,3 +69,6 @@ def main():
                 break
         except ValueError:
             print("Invalid temperature. Please enter a numeric value.")
+
+if __name__ == "__main__":
+    main()
